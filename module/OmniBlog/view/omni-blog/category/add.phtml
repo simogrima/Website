@@ -1,0 +1,23 @@
+<?php
+use Doctrine\ORM\Tools\SchemaValidator;
+$validator = new SchemaValidator($em);
+$errors = $validator->validateMapping();
+
+if (count($errors) > 0) {
+	// Lots of errors!
+	echo implode("\n\n", $errors);
+}
+else
+{
+	echo "no errors in Schema";
+	
+}
+/*
+$validator = new SchemaValidator($entityManager);
+$errors = $validator->validateMapping();
+
+if (count($errors) > 0) {
+    // Lots of errors!
+    echo implode("\n\n", $errors);
+}
+*/

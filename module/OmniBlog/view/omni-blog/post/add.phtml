@@ -1,0 +1,27 @@
+<?php
+
+$route = 'omni-blog';
+$controller = 'post';
+$urlAdd = $this->url($route, array('controller' => $controller, 'action'=>'add'));
+//$form->setAttribute('action', $urlAdd)->prepare();
+$form->setAttribute('action', $urlAdd);
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+$post = $form->get('post');
+
+echo $this->formHidden($post->get('id'));
+echo $this->formRow($post->get('author'));
+echo $this->formRow($post->get('title'));
+echo $this->formRow($post->get('content'));
+echo $this->formRow($post->get('postedAt'));
+//echo $this->formCollection($post->get('categories'));
+//echo $this->formSelect($post->get('categories'));
+echo $this->formMultiCheckbox($post->get('categories'));
+
+echo $this->formHidden($form->get('csrf'));
+echo $this->formElement($form->get('submit'));
+
+//echo $this->formCollection($form);
+echo $this->form()->closeTag();

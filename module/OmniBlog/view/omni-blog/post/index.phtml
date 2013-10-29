@@ -1,0 +1,40 @@
+
+<?php
+echo "<strong>Module:</strong> OmniBlog &raquo;";
+echo "<strong>Controller:</strong> Post &raquo;";
+echo "<strong>Action:</strong> index";
+$title = 'My posts';
+$this->headTitle($title);
+
+
+$route = 'omni-blog';
+$controller = 'post';
+$urlAdd = $this->url($route, array('controller' => $controller, 'action'=>'add'));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+    <a href="<?php echo $urlAdd; ?>">Add new post</a>
+</p>
+
+<table class="table">
+<tr>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Content</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($posts as $obj) : 
+    $urlEdit = $this->url($route, array('controller' => $controller, 'action'=>'edit', 'id' => $obj->id));
+    $urlDelete = $this->url($route, array('controller' => $controller, 'action'=>'delete', 'id' => $obj->id));
+?>
+    <tr>
+        <td><?php echo $this->escapeHtml($obj->title);?></td>
+        <td><?php echo $this->escapeHtml($obj->author);?></td>
+        <td><?php echo $this->escapeHtml($obj->content);?></td>
+        <td>
+            <a href="<?php echo $urlEdit; ?>">Edit</a>
+            <a href="<?php echo $urlDelete; ?>">Delete</a>
+        </td>
+    </tr>
+<?php endforeach; ?>
+</table>

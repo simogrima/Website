@@ -1,0 +1,27 @@
+<strong>Module:</strong>        OmniBlog &raquo;
+<strong>Controller:</strong>    Post &raquo;
+<strong>Action:</strong>        delete
+<?php
+// module/Album/view/album/album/delete.phtml:
+
+$title = 'Delete album';
+$this->headTitle($title);
+
+$route = 'omni-blog';
+$controller = 'post';
+$urlDelete = $this->url($route, array('controller' => $controller, 'action'=>'delete', 'id' => $post->id));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>Are you sure that you want to delete
+    '<?php echo $this->escapeHtml($post->title); ?>' by
+    '<?php echo $this->escapeHtml($post->author); ?>'?
+</p>
+
+<form action="<?php echo $urlDelete; ?>" method="post">
+<div>
+    <input type="hidden" name="id" value="<?php echo (int) $post->id; ?>" />
+    <input type="submit" name="del" value="Yes" />
+    <input type="submit" name="del" value="No" />
+</div>
+</form>

@@ -1,0 +1,45 @@
+<strong>Module:</strong>        OmniBlog &raquo;
+<strong>Controller:</strong>    Post &raquo;
+<strong>Action:</strong>        edit
+<?php
+// module/Album/view/album/album/edit.phtml:
+
+$title = 'Edit Post';
+$this->headTitle($title);
+
+$route = 'omni-blog';
+$controller = 'post';
+//$urlIndex = $this->url($route, array('controller' => $controller, 'action'=>'index'));
+
+$urlEdit = $this->url($route, array(
+    'controller' => $controller, 
+    'action' => 'edit', 
+    'id' => $this->id)
+    );
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+$form->setAttribute('action', $urlEdit);
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+
+$post = $form->get('post');
+
+//echo $this->formCollection($form);
+echo $this->formHidden($post->get('id'));
+echo $this->formRow($post->get('author'));
+echo $this->formRow($post->get('title'));
+echo $this->formRow($post->get('content'));
+echo $this->formRow($post->get('postedAt'));
+//echo $this->formCollection($post->get('categories'));
+//echo $this->formSelect($post->get('categories'));
+echo $this->formMultiCheckbox($post->get('categories'));
+//echo $this->formMultiCheckbox($post->get('category_post_associations'));
+
+echo $this->formHidden($form->get('csrf'));
+echo $this->formElement($form->get('submit'));
+
+echo $this->form()->closeTag();
