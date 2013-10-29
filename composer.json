@@ -12,6 +12,9 @@
         "zendframework/zendframework": ">2.2.0rc1",
         "doctrine/orm": "2.4.*",
         "symfony/yaml": "2.*",
-        "doctrine/doctrine-orm-module": "0.7.*"
+        "doctrine/doctrine-orm-module": "0.7.*",
+        "zf-commons/zfc-user": "0.1.*",
+	    "zf-commons/zfc-user-doctrine-orm": "0.1.*",
+	    "bjyoungblood/bjy-authorize": "1.2.*"
     }
 }

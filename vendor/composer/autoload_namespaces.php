@@ -6,6 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ZfcUserDoctrineORM' => array($vendorDir . '/zf-commons/zfc-user-doctrine-orm/src'),
+    'ZfcUser' => array($vendorDir . '/zf-commons/zfc-user/src'),
+    'ZfcBase' => array($vendorDir . '/zf-commons/zfc-base/src'),
     'Zend\\' => array($vendorDir . '/zendframework/zendframework/library'),
     'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
@@ -21,4 +24,5 @@ return array(
     'DoctrineORMModuleTest\\' => array($vendorDir . '/doctrine/doctrine-orm-module/tests'),
     'DoctrineModule\\' => array($vendorDir . '/doctrine/doctrine-module/src'),
     'DoctrineModuleTest\\' => array($vendorDir . '/doctrine/doctrine-module/tests'),
+    'BjyAuthorize\\' => array($vendorDir . '/bjyoungblood/bjy-authorize/src'),
 );
