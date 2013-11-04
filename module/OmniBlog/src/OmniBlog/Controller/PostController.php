@@ -110,38 +110,53 @@ class PostController extends AbstractActionController
         // Create the form and inject the ObjectManager
         $form = new PostForm($objectManager);
         
-        //Get Entity by ID & bind
-        $entity = $this->getEntityManager()->find('OmniBlog\Entity\Post', $id);
+        //Get Entity by ID & bind to the form
+        $entity = $objectManager->find('OmniBlog\Entity\Post', $id);
         $form->bind($entity);
         
-        $entity_links = $this->getEntityManager()->getRepository('OmniBlog\Entity\CategoryPostAssociation')->findBy(array('post' => $entity));
-        //$objectManager->getRepository('OmniBlog\Form\CategoryPostAssociation')->findBy(array('post_id' => $this->po))
-        //$this->getEntityManager()->find('OmniBlog\Entity\Post', $id);
-//         $xmyPost = $form->getBaseFieldset();
-//         $a = $xmyPost->getAttributes();
-//         $o = $xmyPost->getOptions();
-//         $v = $xmyPost->getValue();
-        //$elements = $xmyPost->getElements();
-        //$element = $xmyPost->get('categories');
-        $element = $form->getBaseFieldset()->get('categories');
-        $element->setValue($entity_links);
-        //$element->setOptions($options)
+
+        //Manage Associations here because couldn't find a way in fieldsets
+        //Get Element 'categories'
+        $element = $form->getBaseFieldset()->get('categories'); //Object of: DoctrineModule\\Form\\Element\\ObjectMultiCheckbox
         
-        /*foreach($entity_links as $link){
-            $element->setValue($link->getId());            
-        }*/
+        //Setup intial Associated_Categories
+        $entity_links = $objectManager->getRepository('OmniBlog\Entity\CategoryPostAssociation')->findBy(array('post' => $entity));
+        $startingIDs = array();
+        foreach($entity_links as $link){
+            $catId = $link->getCategory()->getId();
+            array_push($startingIDs, $catId);
+        }
+        $element->setValue($startingIDs);
         
-//         if($element == \DoctrineModule\Form\Element\ObjectMultiCheckbox)
-//         {
-//             echo "bull shit";
-//         }
-        //categories	Object of: DoctrineModule\\Form\\Element\\ObjectMultiCheckbox
-        
+        //Submit Button Pressed
         if ($this->request->isPost()) {
         	$form->setData($this->request->getPost());
             
         	if ($form->isValid()) {
         	    //random test: $form->bindOnValidate();
+        	    
+        	    
+        	    /* TODO: finish managing assocaitions
+        	    //Manage Associations here because couldn't find a way in fieldsets
+        	    $eValue = $element->getValue();
+        	    //$eValue = Selected Associations
+        	    //$startingIDs = old
+        	    //$eValue = new
+        	    
+        	    foreach($entity_links as $link)
+        	    {
+        	        $catId = $link->getCategory()->getId();
+        	        //array_push($idArray, $catId);
+        	    }
+        	    
+        	    //Compare old to new.
+        	    //Get what to remove
+        	       //Whats missing from old in new
+        	    //Get what to add
+        	       //Whats missing from new in old
+        	        
+    	        */
+        	    
         		// Save the changes
         		$objectManager->flush();
         		return $this->redirect()->toRoute('omni-blog',

@@ -48,6 +48,18 @@ class Module implements AutoloaderProviderInterface
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        /* Example from: http://framework.zend.com/manual/2.2/en/modules/zend.mvc.examples.html#bootstraping
+        $application = $e->getApplication();
+        $config      = $application->getConfig();
+        $view        = $application->getServiceManager()->get('ViewHelperManager');
+        // You must have these keys in you application config
+        $view->headTitle($config['view']['base_title']);
+
+        // This is your custom listener
+        $listener   = new Listeners\ViewListener();
+        $listener->setView($view);
+        $application->getEventManager()->attachAggregate($listener);
+         */
     }
     
     public function getServiceConfig()

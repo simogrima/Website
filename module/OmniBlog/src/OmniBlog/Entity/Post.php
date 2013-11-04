@@ -88,7 +88,7 @@ class Post implements InputFilterAwareInterface
     public function getId(){
     	return $this->id;
     }
-    protected function setId($value){
+    public function setId($value){
     	$this->id = $value;
     }
     public function getTitle(){

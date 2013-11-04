@@ -1,6 +1,8 @@
 <?php
 namespace OmniBlog\Entity;
 
+//Debug Warning: /OmniApp/vendor/doctrine/common/lib/Doctrine/Common/Proxy/ProxyGenerator.php line 305 - rename(data/DoctrineORMModule/Proxy\__CG__OmniBlogEntityCategory.php.52766f699fab08.92039125,data/DoctrineORMModule/Proxy\__CG__OmniBlogEntityCategory.php): Access is denied. (code: 5)
+
 use Doctrine\ORM\Mapping as ORM;
 /*
 use Zend\InputFilter\InputFilter;
@@ -73,7 +75,7 @@ class Category //implements InputFilterAwareInterface
     public function getId(){
     	return $this->id;
     }
-    protected function setId($value){
+    public function setId($value){
     	$this->id = $value;
     }
     

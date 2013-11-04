@@ -21,8 +21,49 @@ return array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ),
     ),
+   
+    'navigation' => array(
+		'default' => array(
+			array(
+				'label' => 'Home',
+				'route' => 'home',
+			),
+			array(
+				'label' => 'Blog',
+				'route' => 'omni-blog',
+				'pages' => array(
+					array(
+						'label' => 'Category',
+						'route' => 'omni-blog',
+						'controller' => 'category',
+					),
+					array(
+						'label' => 'Post',
+						'route' => 'omni-blog',
+						'controller' => 'post',
+						'pages' => array(
+						      array(
+							      'label' => 'Add',
+							      'route' => 'omni-blog',
+							      'controller' => 'post',
+							      'action' => 'add',
+						      ),
+			            ),
+					),
+				),
+			),
+
+
+			array(
+    			'label' => 'User',
+    			'route' => 'zfcuser',
+			),
+		),
+    ),
     'service_manager' => array(
         'factories' => array(
+            'navigation'
+        	       	=> 'Zend\Navigation\Service\DefaultNavigationFactory',
             'Zend\Db\Adapter\Adapter'
                     => 'Zend\Db\Adapter\AdapterServiceFactory',
         ),
