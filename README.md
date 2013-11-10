@@ -1,3 +1,5 @@
+INCOMPLETE, currently being developed on a local repo and will be uploading first major version soon
+
 OmniApp
 =======================
 
