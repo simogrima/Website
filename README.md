@@ -9,10 +9,10 @@ My own playground application where I spend most of my time learning new things 
 
 
 TODO
-------------
+=======================
 
 Blog
-=======================
+----
 
 Front End
 Enable Comments
