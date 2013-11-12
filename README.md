@@ -1,6 +1,6 @@
 INCOMPLETE, currently being developed on a local repo and will be uploading first major version soon
 
-OmniApp
+MyWebsite
 =======================
 
 Introduction
@@ -11,8 +11,10 @@ My own playground application where I spend most of my time learning new things 
 TODO
 ------------
 
-Blog Front End
+Blog
+=======================
 
-Blog CMS
-
-Blog Editable Configurations
+Front End
+Enable Comments
+CMS: Dashboard
+CMS: Editable Configurations
