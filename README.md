@@ -13,8 +13,7 @@ TODO
 
 Blog
 ----
-
-Front End
-Enable Comments
-CMS: Dashboard
-CMS: Editable Configurations
+* Front End
+* Enable Comments
+* CMS: Dashboard
+* CMS: Editable Configurations
