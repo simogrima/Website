@@ -53,7 +53,7 @@ class Post implements InputFilterAwareInterface
     protected $categories;
     */
     /**
-     * @ORM\OneToMany(targetEntity="OmniBlog\Entity\CategoryPostAssociation", mappedBy="post")
+     * @ORM\OneToMany(targetEntity="OmniBlog\Entity\CategoryPostAssociation", mappedBy="post",  cascade={"persist", "remove"})
      */
     protected $category_post_associations;
     
@@ -125,19 +125,21 @@ class Post implements InputFilterAwareInterface
      * @param \OmniBlog\Entity\CategoryPostAssociation $categoryPostAssociations
      * @return Post
      */
-    public function addCategoryPostAssociations(\OmniBlog\Entity\CategoryPostAssociation $categoryPostAssociations){
-    	$this->category_post_associations[] = $categoryPostAssociations;
-    
-    	return $this;
+    public function addCategoryPostAssociations(\OmniBlog\Entity\CategoryPostAssociation $link){
+    	//$this->category_post_associations[] = $categoryPostAssociations;
+        $this->category_post_associations->add($link);
+        return this;
     }
     
     /**
      * Remove category_post_associations
      *
      * @param \OmniBlog\Entity\CategoryPostAssociation $categoryPostAssociations
+     * @return CategoryPostAssociation
      */
-    public function removeCategoryPostAssociations(\OmniBlog\Entity\CategoryPostAssociation $categoryPostAssociations){
-    	$this->category_post_associations->removeElement($categoryPostAssociations);
+    public function removeCategoryPostAssociations(\OmniBlog\Entity\CategoryPostAssociation $link){
+    	$this->category_post_associations->removeElement($link);
+    	return $link;
     }
     
     /**
@@ -173,24 +175,62 @@ class Post implements InputFilterAwareInterface
     */
     
     /**
-     * Allow null to remove association
+     * Returns the created $link
      */
     public function addCategory(Category $category){
-        $this->categories->add($category);
+        //$this->categories->add($category);
+        //Create Association, add to entity's list
+        //$this->category_post_associations
+        $link = new CategoryPostAssociation();
+        $link->setCategory($category);
+        $link->setPost($this);
+        $this->addCategoryPostAssociations($link);
+        return $link;
     }
+
+    //Returns the removed $link
+    /**
+     * Throws \Exception("Not used");
+     */
     public function removeCategory(Category $category){
-    	$this->categories->removeElement($category);
+
+        throw new \Exception("Not used");
+        
+//         $links = $this->getCategoryPostAssociations();
+//     	foreach($links as $l)
+//     	{
+//     	    $cat = $l->getCategory();
+//     	    if($cat->getId() == $category->getId()){
+//     	        $link = $l;
+//     	        break;
+//     	    }
+//     	}
+//     	$this->category_post_associations->removeElement($link);
+//     	return $link;
     }
-    public function getCategory()
-    {
-        return $this->category;
+    
+    
+    //Returns the removed $link
+    /**
+     * Throws \Exception("Not used"); 
+     */
+    public function removeCategoryById($catId){
+
+        throw new \Exception("Not used");
+        
+//     	$links = $this->getCategoryPostAssociations();
+//     	foreach($links as $l)
+//     	{
+//     		$cat = $l->getCategory();
+//     		if($cat->getId() == $catId){
+//     			$link = $l;
+//     			break;
+//     		}
+//     	}
+//     	$this->category_post_associations->removeElement($link);
+//     	return $link;
     }
-//     public function getCategories(){
-//     	return $this->categories;
-//     }
-//     public function setCategories($value){
-//     	$this->categories = $value;
-//     }
+    
     /**
      * Convert the object to an array.
      *

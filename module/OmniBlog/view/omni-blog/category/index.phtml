@@ -1,68 +1,44 @@
 <?php
-
-echo "<strong>Module:</strong> OmniBlog &raquo;";
-echo "<strong>Controller:</strong> Category &raquo;";
-echo "<strong>Action:</strong> index";
-
-$title = 'My categories';
+$title = 'Blog';
 $this->headTitle($title);
 
-
-$route = 'omni-blog';
-$controller = 'category';
-$url = $this->url($route, array($controller, 'action'=>'add'));
+$route = 'omni-blog/blogchild';
+$controller = 'category'; //current controller
 ?>
-<h1><?php echo $this->escapeHtml($title); ?></h1>
-<p>
-    <a href="<?php echo $this->url($route, array($controller, 'action'=>'add'));?>">Add new categoy</a>
-</p>
 
-<table class="table">
-<tr>
-    <th>Title</th>
-    <th>&nbsp;</th>
-</tr>
-<?php foreach ($categories as $obj) : ?>
-
-<tr>
-    <td>
-    <?php echo $this->escapeHtml($obj->getTitle());?>
-        <table class="table">
-        <tr>
-            <th>Posts</th>
-        </tr>
+<div class="page_content">
+    <h1 class="title">Blog</h1>
+    <p><a href="https://github.com/Suiko6272/Website/">Website's GitHub Repo</a><br>This is a simple Blog CMS developed in Zend Framework 2.<br>In active development so styles may break or not even exist.<br>Below are the latest three posts and existing categories.</br></p>
+    <div class="blog_posts">
+        <h2>Latest Posts</h2>
         <?php 
-            $associations = $obj->getCategoryPostAssociations();
             //print_r($associations);
-            foreach ($associations as $entity_link):
-
-            $link_post = $entity_link->getPost();
+            foreach ($latestPosts as $post):
+            $post_id = $post->getId();
         ?>
-        <tr>
-            <td>
-                <a href="<?php echo $this->url($route, 
-                    array('controller' => 'post',
-                    'action'=>'edit', 'id' => $link_post->getId()
-                )); ?>">
-                    <?php echo $link_post->getTitle();?></a>
-            </td>
-        </tr>
+            <div style="padding:10px;display:block">
+            <div style="padding:inherit;background-color:#F2F2F2;display:inline-block" class ="post" id="post-<?php echo $this->escapehtml($post_id);?>">
+                <h3><a href="<?php echo $this->url($route, 
+                            array('controller' => 'post',
+                            'action'=>'view', 'id' => $post_id
+                            )); ?>">
+                    <?php echo $post->getTitle();?>
+                </a></h3>
+                <p class="shorthand"><?php echo $this->escapehtml($post->getContent());?></p>
+                <!-- <p class="author" >Posted By: <?php echo $this->escapehtml($post->getAuthor());?></p> -->
+            </div><!-- post -->
+            </div>
         <?php endforeach; ?>
-        </table>
-    </td>
-    <td>
-        <a href="<?php echo $this->url($route,
-            array($controller,
-            'action'=>'edit', 'id' => $obj->getId()
+    </div><!-- blog_posts -->
+    <div class="categories">
+        <h2>Categories</h2>
+        <?php foreach ($categories as $cat) : ?>
+            <p>#<a href="<?php echo $this->url($route, array(
+            'controller' => $controller,
+            'action'=>'view',
+            'id' => $cat->getId()
         ));
-        ?>">Edit</a>
-        <a href="<?php echo $this->url('omni-blog',
-            array('controller'=>'post',
-            'action'=>'delete', 'id' => $obj->getId()
-        ));
-        ?>">Delete</a>
-    </td>
-    
-</tr>
-<?php endforeach; ?>
-</table>
+        ?>"><?php echo $this->escapeHtml($cat->getTitle());?></a></p>
+        <?php endforeach; ?>
+    </div>
+</div><!-- page_content -->

@@ -11,27 +11,61 @@ return array(
 	'router' => array(
 		'routes' => array(
 			'omni-blog' => array(
-				'type'    => 'segment',
+				'type'    => 'literal',
 				'options' => array(
 					// Change this to something specific to your module
-					'route'    => '/blog[/][:controller[/:action[/:id]]]',
-					'constraints' => array(
-						'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-						'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-						'id'    => '[0-9]+',
-					),
+					'route'    => '/blog',
 					'defaults' => array(
-						// Change this value to reflect the namespace in which
-						// the controllers for your module are found
 						'__NAMESPACE__' => 'OmniBlog\Controller',
 						'controller'    => 'Category',
 						'action'        => 'index',
 					),
 				),
-				//'may_terminate' => true,
+				'may_terminate' => true,
+			    'child_routes' => array(
+					'blogchild' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/[:controller[/:action[/:id]]]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id'    => '[0-9]+',
+                            ),
+                            'defaults' => array(
+                                'controller'    => 'Category',
+                                'action'        => 'index',
+                            )
+                        ),
+                    ),
+                ),
 			),
 		),
 	),
+//     'router' => array(
+//     		'routes' => array(
+//     				'omni-blog' => array(
+//     						'type'    => 'segment',
+//     						'options' => array(
+//     								// Change this to something specific to your module
+//     								'route'    => '/blog[/][:controller[/:action[/:id]]]',
+//     								'constraints' => array(
+//     										'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+//     										'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+//     										'id'    => '[0-9]+',
+//     								),
+//     								'defaults' => array(
+//     										// Change this value to reflect the namespace in which
+//     										// the controllers for your module are found
+//     										'__NAMESPACE__' => 'OmniBlog\Controller',
+//     										'controller'    => 'Category',
+//     										'action'        => 'index',
+//     								),
+//     						),
+//     						//'may_terminate' => true,
+//     				),
+//     		),
+//     ),
 	'view_manager' => array(
 		'template_path_stack' => array(
 				'OmniBlog' => __DIR__ . '/../view',

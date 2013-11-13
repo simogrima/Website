@@ -2,12 +2,11 @@
 <strong>Controller:</strong>    Post &raquo;
 <strong>Action:</strong>        delete
 <?php
-// module/Album/view/album/album/delete.phtml:
 
-$title = 'Delete album';
+$title = 'Delete Post';
 $this->headTitle($title);
 
-$route = 'omni-blog';
+$route = 'omni-blog/blogchild';
 $controller = 'post';
 $urlDelete = $this->url($route, array('controller' => $controller, 'action'=>'delete', 'id' => $post->id));
 ?>

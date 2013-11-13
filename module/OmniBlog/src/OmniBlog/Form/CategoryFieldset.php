@@ -38,11 +38,7 @@ class CategoryFieldset extends Fieldset implements InputFilterProviderInterface
 	public function getInputFilterSpecification()
 	{
 		return array(
-            'id' => array(
-                'required' => false
-            ),
-
-            'name' => array(
+            'title' => array(
                 'required' => true
             )
         );

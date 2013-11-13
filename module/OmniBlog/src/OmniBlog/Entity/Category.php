@@ -4,18 +4,18 @@ namespace OmniBlog\Entity;
 //Debug Warning: /OmniApp/vendor/doctrine/common/lib/Doctrine/Common/Proxy/ProxyGenerator.php line 305 - rename(data/DoctrineORMModule/Proxy\__CG__OmniBlogEntityCategory.php.52766f699fab08.92039125,data/DoctrineORMModule/Proxy\__CG__OmniBlogEntityCategory.php): Access is denied. (code: 5)
 
 use Doctrine\ORM\Mapping as ORM;
-/*
+
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
-*/
+
 /**
  * A post's comment or reply to comment.
  * @Orm\Entity
  * @ORM\Table(name="category")
  */
-class Category //implements InputFilterAwareInterface 
+class Category implements InputFilterAwareInterface 
 {
     /**
     * @ORM\Column(name="id", type="integer")
@@ -37,40 +37,40 @@ class Category //implements InputFilterAwareInterface
     */
     
     /**
-     * @ORM\OneToMany(targetEntity="CategoryPostAssociation", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="CategoryPostAssociation", mappedBy="category",  cascade={"persist", "remove"})
      */
     protected $category_post_associations;
     
     
     protected $inputFilter;
     
-    /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
-     */
     
     public function __construct() {
     	//$this->posts = new \Doctrine\Common\Collections\ArrayCollection();
         $this->category_post_associations = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
-    public function __get($property)
-    {
-    	return $this->$property;
-    }
+//     /**
+//      * Magic getter to expose protected properties.
+//      *
+//      * @param string $property
+//      * @return mixed
+//      */
+//     public function __get($property)
+//     {
+//     	return $this->$property;
+//     }
     
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property
-     * @param mixed $value
-     */
-    public function __set($property, $value)
-    {
-    	$this->$property = $value;
-    }
+//     /**
+//      * Magic setter to save protected properties.
+//      *
+//      * @param string $property
+//      * @param mixed $value
+//      */
+//     public function __set($property, $value)
+//     {
+//     	$this->$property = $value;
+//     }
     
     public function getId(){
     	return $this->id;
@@ -92,8 +92,8 @@ class Category //implements InputFilterAwareInterface
      * @param \OmniBlog\Entity\CategoryPostAssociation $categoryPostAssociations
      * @return Category
      */
-    public function addCategoryPostAssociations(\OmniBlog\Entity\CategoryPostAssociation $categoryPostAssociations){
-    	$this->category_post_associations[] = $categoryPostAssociations;
+    public function addCategoryPostAssociations(\OmniBlog\Entity\CategoryPostAssociation $link){
+    	$this->category_post_associations->add($link);
     
     	return $this;
     }
@@ -103,8 +103,8 @@ class Category //implements InputFilterAwareInterface
      *
      * @param \OmniBlog\Entity\CategoryPostAssociation $categoryPostAssociations
      */
-    public function removeCategoryPostAssociations(\OmniBlog\Entity\CategoryPostAssociation $categoryPostAssociations){
-    	$this->category_post_associations->removeElement($categoryPostAssociations);
+    public function removeCategoryPostAssociations(\OmniBlog\Entity\CategoryPostAssociation $link){
+    	$this->category_post_associations->removeElement($link);
     }
     
     /**
@@ -161,7 +161,7 @@ class Category //implements InputFilterAwareInterface
     	$this->posts = $data['posts'];
     }
     */
-    /*
+    
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
     	throw new \Exception("Not used");
@@ -179,25 +179,6 @@ class Category //implements InputFilterAwareInterface
     				'required'   => true,
     				'filters' => array(
     						array('name'    => 'Int'),
-    				),
-    		)));
-    
-    		$inputFilter->add($factory->createInput(array(
-    				'name'     => 'author',
-    				'required' => true,
-    				'filters'  => array(
-    						array('name' => 'StripTags'),
-    						array('name' => 'StringTrim'),
-    				),
-    				'validators' => array(
-    						array(
-    								'name'    => 'StringLength',
-    								'options' => array(
-    										'encoding' => 'UTF-8',
-    										'min'      => 1,
-    										'max'      => 32,
-    								),
-    						),
     				),
     		)));
     
@@ -220,29 +201,10 @@ class Category //implements InputFilterAwareInterface
     				),
     		)));
     		
-    		$inputFilter->add($factory->createInput(array(
-    				'name'     => 'content',
-    				'required' => true,
-    				'filters'  => array(
-    						array('name' => 'StripTags'),
-    						array('name' => 'StringTrim'),
-    				),
-    				'validators' => array(
-    						array(
-    								'name'    => 'StringLength',
-    								'options' => array(
-    										'encoding' => 'UTF-8',
-    										'min'      => 1,
-    										'max'      => 1000,
-    								),
-    						),
-    				),
-    		)));
-    
     		$this->inputFilter = $inputFilter;
     	}
     
     	return $this->inputFilter;
     }
-    */
+    
 }

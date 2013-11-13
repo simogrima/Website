@@ -31,26 +31,26 @@ return array(
 			array(
 				'label' => 'Blog',
 				'route' => 'omni-blog',
-				'pages' => array(
-					array(
-						'label' => 'Category',
-						'route' => 'omni-blog',
-						'controller' => 'category',
-					),
-					array(
-						'label' => 'Post',
-						'route' => 'omni-blog',
-						'controller' => 'post',
-						'pages' => array(
-						      array(
-							      'label' => 'Add',
-							      'route' => 'omni-blog',
-							      'controller' => 'post',
-							      'action' => 'add',
-						      ),
-			            ),
-					),
-				),
+// 				'pages' => array(
+// 					array(
+// 						'label' => 'Category',
+// 						'route' => 'omni-blog',
+// 						'controller' => 'category',
+// 					),
+// 					array(
+// 						'label' => 'Post',
+// 						'route' => 'omni-blog',
+// 						'controller' => 'post',
+// 						'pages' => array(
+// 						      array(
+// 							      'label' => 'Add',
+// 							      'route' => 'omni-blog',
+// 							      'controller' => 'post',
+// 							      'action' => 'add',
+// 						      ),
+// 			            ),
+// 					),
+// 				),
 			),
 
 
@@ -68,4 +68,18 @@ return array(
                     => 'Zend\Db\Adapter\AdapterServiceFactory',
         ),
     ),
+	'doctrine' => array(
+			'connection' => array(
+					'orm_default' => array(
+							'driverClass' =>'Doctrine\DBAL\Driver\PDOMySql\Driver',
+							'params' => array(
+									'host'     => 'localhost',
+									'port'     => '3306',
+									'user'     => 'root',
+									'password' => '',
+									'dbname'   => 'omnidb',
+							)
+					)
+			)
+	),
 );

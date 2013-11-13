@@ -1,0 +1,28 @@
+
+<?php
+// echo "<strong>Module:</strong> OmniBlog &raquo;";
+// echo "<strong>Controller:</strong> Post &raquo;";
+// echo "<strong>Action:</strong> view";
+
+$post = $this->post;
+$title = $post->getTitle();
+$this->headTitle($title);
+
+$route = 'omni-blog/blogchild';
+$controller = 'post';
+$urlEdit = $this->url($route, array('controller' => $controller, 'action'=>'edit', 'id' => $this->postID));
+$urlDelete = $this->url($route, array('controller' => $controller, 'action'=>'delete', 'id' => $this->postID));
+$content = $post->getContent();
+$author = $post->getAuthor();
+$date = $post->getPostedAt();
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<a href="<?php echo $urlEdit; ?>">Edit</a>
+<a href="<?php echo $urlDelete; ?>">Delete</a>
+
+<p><?php echo $this->escapehtml($content);?></p>
+<p>Posted by: <?php echo $this->escapehtml($author);?>.</p>
+<p>At: <?php 
+//Does not work: echo $this->escapehtml($date);
+?>.</p>
+

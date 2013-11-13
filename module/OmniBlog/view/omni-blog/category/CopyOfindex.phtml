@@ -1,0 +1,68 @@
+<?php
+
+echo "<strong>Module:</strong> OmniBlog &raquo;";
+echo "<strong>Controller:</strong> Category &raquo;";
+echo "<strong>Action:</strong> index";
+
+$title = 'My categories';
+$this->headTitle($title);
+
+
+$route = 'omni-blog/blogchild';
+$controller = 'category';
+$url = $this->url($route, array($controller, 'action'=>'add'));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+    <a href="<?php echo $this->url($route, array($controller, 'action'=>'add'));?>">Add new categoy</a>
+</p>
+
+<table class="table">
+
+<?php foreach ($categories as $obj) : ?>
+<tr>
+    <td>
+    <p>cat: <a href="<?php echo $this->url($route, array(
+            'controller' => $controller,
+            'action'=>'view',
+            'id' => $obj->getId()
+        ));
+        ?>"><?php echo $this->escapeHtml($obj->getTitle());?></a></p>
+        <table class="table">
+        <?php 
+            $associations = $obj->getCategoryPostAssociations();
+            //print_r($associations);
+            foreach ($associations as $entity_link):
+
+            $link_post = $entity_link->getPost();
+        ?>
+        <tr>
+            <td>
+                <a href="<?php echo $this->url($route, 
+                    array('controller' => 'post',
+                    'action'=>'view', 'id' => $link_post->getId()
+                )); ?>">
+                    <?php echo $link_post->getTitle();?></a>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+        </table>
+    </td>
+    <td>
+        <a href="<?php echo $this->url($route, array(
+            'controller' => $controller,
+            'action'=>'edit', 
+            'id' => $obj->getId()
+        ));
+        ?>">Edit</a>
+        <a href="<?php echo $this->url($route, array(
+            'controller' => $controller,
+            'action'=>'delete', 
+            'id' => $obj->getId()
+        ));
+        ?>">Delete</a>
+    </td>
+    
+</tr>
+<?php endforeach; ?>
+</table>

@@ -14,7 +14,7 @@ use Zend\View\Model\ViewModel;
 use OmniBlog\Form\PostForm;
 use Doctrine\ORM\EntityManager;
 use OmniBlog\Entity\Post;
-use Zend\Form\Element\MultiCheckbox;
+//use Zend\Form\Element\MultiCheckbox;
 
 
 /**
@@ -24,8 +24,11 @@ use Zend\Form\Element\MultiCheckbox;
  */
 class PostController extends AbstractActionController
 {
-    protected $modelTable;
-    private $tableRoute = 'OmniBlog\Model\PostTable';
+    const ROUTE_INDEX       = 'omni-blog';
+    const ROUTE_CHILD       = 'omni-blog/blogchild';
+    const ENTITY_PATH       = 'OmniBlog\Entity\Post';
+
+    const CONTROLLER_NAME   = 'category';
     
     /**
      * @var Doctrine\ORM\EntityManager
@@ -44,23 +47,11 @@ class PostController extends AbstractActionController
     	}
     	return $this->entityManager;
     }
-    
-    protected function quickAdd() {
-        $objectManager = $this->em;
-        
-        $post = new \OmniBlog\Entity\Post();
-        $post->__set('author', 'testUser');
-        $post->__set('title', 'test');
-        $post->__set('content', 'emTest');
-        
-        $objectManager->persist($post);
-        $objectManager->flush();
-        $data = array(
-        		'posts' => $objectManager
-        		->getRepository('OmniBlog\Entity\Post')
-        		->findAll()
-        );
-        return new Viewmodel($data);
+    public function getRepository($parm) {
+    	return $this->getEntityManager()->getRepository($parm);
+    }
+    public function getRouteID(){
+    	return (int)$this->getEvent()->getRouteMatch()->getParam('id');
     }
     
     /**
@@ -68,7 +59,7 @@ class PostController extends AbstractActionController
      */
     public function indexAction() {
         return new ViewModel(array(
-        	'posts' => $this->getEntityManager()->getRepository('OmniBlog\Entity\Post')->findall()
+        	'posts' => $this->getRepository(static::ENTITY_PATH)->findAll()
         ));
     }
 
@@ -77,8 +68,8 @@ class PostController extends AbstractActionController
         $objectManager = $this->getEntityManager();
         
         //Create the form and inject the ObjectManager
+        //Bind the entity to the form
         $form = new PostForm($objectManager);
-
         $post = new Post();
         $form->bind($post);
         
@@ -87,11 +78,28 @@ class PostController extends AbstractActionController
         	$form->setData($request->getPost());
         
         	if ($form->isValid()) {
-        		$objectManager->persist($post);
-        		$objectManager->flush();
-        		return $this->redirect()->toRoute('omni-blog',
-        				array('controller' => 'post')
-        		);
+        	    /*
+        	    * Get IDs from form element
+        	    * Get categories from the IDs
+        	    * add entities to $post's categories list
+        	    */
+        	    $element = $form->getBaseFieldset()->get('categories'); //Object of: DoctrineModule\\Form\\Element\\ObjectMultiCheckbox
+        	    $values = $element->getValue();
+
+        	    foreach($values as $catID){
+        	        $results = $objectManager->getRepository('OmniBlog\Entity\Category')->findBy(array('id' => $catID));
+        	        $catEntity = array_pop($results);        	        
+        	        $link = $post->addCategory($catEntity);
+        	        //Entity/Post 's association table cascades persists and removes so don't need to persist($link), but would be done here
+        	    }
+        	    
+         		$objectManager->persist($post);
+         		$objectManager->flush();
+
+        		return $this->redirect()->toRoute(
+        		    static::ROUTE_CHILD,
+        		    array('controller' => static::CONTROLLER_NAME
+                ));
         	}
         }
         return array('form' => $form);
@@ -111,8 +119,8 @@ class PostController extends AbstractActionController
         $form = new PostForm($objectManager);
         
         //Get Entity by ID & bind to the form
-        $entity = $objectManager->find('OmniBlog\Entity\Post', $id);
-        $form->bind($entity);
+        $post = $objectManager->find('OmniBlog\Entity\Post', $id);
+        $form->bind($post);
         
 
         //Manage Associations here because couldn't find a way in fieldsets
@@ -120,7 +128,7 @@ class PostController extends AbstractActionController
         $element = $form->getBaseFieldset()->get('categories'); //Object of: DoctrineModule\\Form\\Element\\ObjectMultiCheckbox
         
         //Setup intial Associated_Categories
-        $entity_links = $objectManager->getRepository('OmniBlog\Entity\CategoryPostAssociation')->findBy(array('post' => $entity));
+        $entity_links = $objectManager->getRepository('OmniBlog\Entity\CategoryPostAssociation')->findBy(array('post' => $post));
         $startingIDs = array();
         foreach($entity_links as $link){
             $catId = $link->getCategory()->getId();
@@ -129,33 +137,34 @@ class PostController extends AbstractActionController
         $element->setValue($startingIDs);
         
         //Submit Button Pressed
-        if ($this->request->isPost()) {
-        	$form->setData($this->request->getPost());
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+        	$form->setData($request->getPost());
             
         	if ($form->isValid()) {
         	    //random test: $form->bindOnValidate();
         	    
-        	    
-        	    /* TODO: finish managing assocaitions
-        	    //Manage Associations here because couldn't find a way in fieldsets
+        	    //TODO: finish managing assocaitions
         	    $eValue = $element->getValue();
-        	    //$eValue = Selected Associations
-        	    //$startingIDs = old
-        	    //$eValue = new
+
+        	    $removeList = array_diff($startingIDs, $eValue);
+        	    $addList = array_diff($eValue, $startingIDs);
         	    
-        	    foreach($entity_links as $link)
-        	    {
-        	        $catId = $link->getCategory()->getId();
-        	        //array_push($idArray, $catId);
-        	    }
-        	    
-        	    //Compare old to new.
-        	    //Get what to remove
-        	       //Whats missing from old in new
-        	    //Get what to add
-        	       //Whats missing from new in old
+        	    foreach($removeList as $removeId){
+        	        foreach($entity_links as $link){
+        	        	$cat = $link->getCategory();
+        	        	if($cat->getId() == $removeId){
+        	        	    $post->removeCategoryPostAssociations($link);
+        	        	    $objectManager->remove($link);
+        	        	}
+        	        }
         	        
-    	        */
+        	        
+        	    }
+        	    foreach($addList as $addId){
+                    $category = $objectManager->find('OmniBlog\Entity\Category', $addId);
+        	        $post->addCategory($category);
+        	    }
         	    
         		// Save the changes
         		$objectManager->flush();
@@ -198,13 +207,14 @@ class PostController extends AbstractActionController
             'post' => $this->getEntityManager()->find('OmniBlog\Entity\Post', $id)
         );
     }
-    
-    public function getModelTable()
-    {
-    	if (!$this->modelTable) {
-    		$sm = $this->getServiceLocator();
-    		$this->modelTable = $sm->get($this->tableRoute);
+    public function viewAction() {
+    	$id = $this->getRouteID();
+    	if (!$id) {
+    		return $this->redirect()->toRoute(static::ROUTE_INDEX);
     	}
-    	return $this->modelTable;
+    	$entity = $this->getEntityManager()->find(static::ENTITY_PATH, $id);
+    	return new ViewModel(
+    			array('post' => $entity, 'postID' => $id)
+    	);
     }
 }

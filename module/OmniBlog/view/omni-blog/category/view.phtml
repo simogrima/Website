@@ -1,0 +1,40 @@
+<?php
+
+// echo "<strong>Module:</strong> OmniBlog &raquo;";
+// echo "<strong>Controller:</strong> Category &raquo;";
+// echo "<strong>Action:</strong> view";
+
+$category = $this->category;
+$title = $category->getTitle();
+$this->headTitle($title);
+
+
+$route = 'omni-blog/blogchild';
+$controller = 'category';
+$url = $this->url($route, array($controller, 'action'=>'add'));
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+
+<table class="table">
+<tr>
+    <th>Posts</th>
+</tr>
+    <?php 
+        $associations = $category->getCategoryPostAssociations();
+        //print_r($associations);
+        foreach ($associations as $entity_link):
+        
+        $link_post = $entity_link->getPost();
+    ?>
+    <tr>
+        <td>
+            <a href="<?php echo $this->escapeHtml($this->url($route, 
+                array('controller' => 'post',
+                'action'=>'view', 'id' => $link_post->getId()
+            ))); ?>">
+                <?php echo $this->escapeHtml($link_post->getTitle());?></a>
+        </td>
+    </tr>
+<?php endforeach; ?>
+</table>

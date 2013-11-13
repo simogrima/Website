@@ -1,0 +1,28 @@
+<strong>Module:</strong>        OmniBlog &raquo;
+<strong>Controller:</strong>    Category &raquo;
+<strong>Action:</strong>        delete
+<?php
+
+$pTitle = 'Delete Category';
+$this->headTitle($title);
+
+$route = 'omni-blog/blogchild';
+$controller = 'category';
+$urlDelete = $this->url($route, array(
+        'controller' => $controller, 
+        'action'=>'delete', 
+        'id' => $this->id));
+?>
+<h1><?php echo $this->escapeHtml($pTitle); ?></h1>
+
+<p>Are you sure that you want to delete
+    '<?php echo $this->escapeHtml($this->title); ?>'?
+</p>
+
+<form action="<?php echo $urlDelete; ?>" method="post">
+<div>
+    <input type="hidden" name="id" value="<?php echo (int) $this->id; ?>" />
+    <input type="submit" name="del" value="Yes" />
+    <input type="submit" name="del" value="No" />
+</div>
+</form>

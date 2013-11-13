@@ -1,24 +1,26 @@
 <strong>Module:</strong>        OmniBlog &raquo;
 <strong>Controller:</strong>    Category &raquo;
-<strong>Action:</strong>        add
+<strong>Action:</strong>        edit
 <?php
 
-$title = 'Add Category';
+$title = 'Edit Category';
 $this->headTitle($title);
 
 $route = 'omni-blog/blogchild';
 $controller = 'category';
 
-$urlAdd = $this->url($route, array(
+$urlEdit = $this->url($route, array(
     'controller' => $controller, 
-    'action' => 'add')
+    'action' => 'edit', 
+    'id' => $this->id)
     );
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 
 <?php
 
-$form->setAttribute('action', $urlAdd);
+$form->setAttribute('action', $urlEdit);
+//$form->setAttribute('id', $this->id);
 $form->prepare();
 
 echo $this->form()->openTag($form);
