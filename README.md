@@ -10,8 +10,8 @@ My own playground application where I spend most of my time learning new things 
 
 TODO
 =======================
-
 * Sub-module the OmniBlog Module
+
 Blog
 ----
 * Front End
