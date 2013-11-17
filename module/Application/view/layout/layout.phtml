@@ -9,38 +9,71 @@
 
         <!-- Le styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                        ->prependStylesheet($this->basePath() . '/css/bootstrap-responsive.min.css')
-                        ->prependStylesheet($this->basePath() . '/css/style.css')
-                        ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') ?>
+                        //->prependStylesheet($this->basePath() . '/css/bootstrap-responsive.min.css')
+                        ->prependStylesheet($this->basePath() . '/css/omniStyle.css')
+                        ->prependStylesheet($this->basePath() . '/css/gumby.css')
+                        //->prependStylesheet($this->basePath() . '/css/zendStyle.css')
+                        
+                        
+                        //->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') 
+        ?>
 
         <!-- Scripts -->
-        <?php echo $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-                                      ->prependFile($this->basePath() . '/js/bootstrap.min.js')
-                                      ->prependFile($this->basePath() . '/js/jquery.min.js') ?>
-
+        <?php echo $this->headScript()
+                        ->prependFile($this->basePath() . '/js/libs/jquery/2.0.2/jquery.min.js')
+                        ->prependFile($this->basePath() . '/js/libs/modernizr-2.6.2.min.js')
+                        ->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+                      //->prependFile($this->basePath() . '/js/bootstrap.min.js')
+                        ->prependFile($this->basePath() . '/js/jquery.min.js')
+        ?>
+        
+        <!--Scripts: Gumby Framework  -->
+        <script gumby-touch="js/libs" src="js/libs/gumby.js"></script>
+        <script src="js/libs/ui/gumby.retina.js"></script>
+        <script src="js/libs/ui/gumby.fixed.js"></script>
+        <script src="js/libs/ui/gumby.skiplink.js"></script>
+        <script src="js/libs/ui/gumby.toggleswitch.js"></script>
+        <script src="js/libs/ui/gumby.checkbox.js"></script>
+        <script src="js/libs/ui/gumby.radiobtn.js"></script>
+        <script src="js/libs/ui/gumby.tabs.js"></script>
+        <script src="js/libs/ui/gumby.navbar.js"></script>
+        <script src="js/libs/ui/gumby.fittext.js"></script>
+        <script src="js/libs/ui/jquery.validation.js"></script>
+        <script src="js/libs/gumby.init.js"></script>
     </head>
-<body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="brand" href="<?php echo $this->url('home') ?>"></a>
-                    <?php // <-- Update this !!
-//                         echo $this->navigation('navigation')
-//                            ->menu()
-//                            ->setMinDepth(0)
-//                            ->setMaxDepth(0)
-//                            ->setUlClass('nav navbar-nav');
-                     ?>
+    <body class="row">
+        <div class="wrapper row">
+            
+<!--             <div gumby-fixed="top" gumby-pin="100"> -->
+                <div class="navbar pretty tweleve columns" id="nav1">
+<!--                     <h1 class="two columns logo"> -->
+<!--                         <img src="img/zf2-logo.png" gumby-retina /> -->
+<!--                     </h1> -->
+                    <ul class="ten columns">
+                        <li><a href="<?php echo $this->url('home') ?>"><i class="icon-home"></i>Home</a></li>
+                        <li><a style="padding-right: 10px" href="<?php echo $this->url('zfcuser') ?>"><i class="icon-user"></i>ZFCUser</a></li>
+                        <li><a href="<?php echo $this->url('omni-blog') ?>"><i class="icon-book"></i>Blog</a></li>
+                    </ul>
+                </div><!-- /navbar row -->
+<!--             </div> /gumby-fixed top-->
+            
+            <div class="page row">
+                <div class="sidebar two columns">
+                    <?php 
+                        echo $this->partial('partial/sideBar.phtml', array('params' => $this->params));
+                    ?>
                 </div>
-            </div>
-        </div>
-        <div class="container">
-            <?php echo $this->content; ?>
-            <hr>
-            <footer>
-                <p>&copy; 2005 - <?php echo date('Y') ?> by Zend Technologies Ltd. <?php echo $this->translate('All rights reserved.') ?></p>
-            </footer>
-        </div> <!-- /container -->
+                <div class="content ten columns">
+                    <?php 
+                        echo $this->content; 
+                    ?>
+                </div>
+                <hr>
+                <footer>
+                    <p>Insert Footer Here</p>
+                </footer>
+            </div> <!-- /container row-->
+        </div><!-- /wrapper -->
         <?php echo $this->inlineScript() ?>
     </body>
 </html>

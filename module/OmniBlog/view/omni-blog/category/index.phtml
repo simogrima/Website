@@ -6,18 +6,22 @@ $route = 'omni-blog/blogchild';
 $controller = 'category'; //current controller
 ?>
 
-<div class="page_content">
-    <h1 class="title">Blog</h1>
-    <p><a href="https://github.com/Suiko6272/Website/">Website's GitHub Repo</a><br>This is a simple Blog CMS developed in Zend Framework 2.<br>In active development so styles may break or not even exist.<br>Below are the latest three posts and existing categories.</br></p>
-    <div class="blog_posts">
+
+<div class="page_content row">
+    <div class="ten columns">
+        <div class="centered ten columns">
+            <h1 class="title">Blog</h1>
+            <p><a href="https://github.com/Suiko6272/Website/">Website's GitHub Repo</a><br>This is a simple Blog CMS developed in Zend Framework 2.<br>In active development so styles may break or not even exist.<br>Below are the latest three posts and existing categories.</p>
+        </div>
+    <div class="blog_posts seven columns">
         <h2>Latest Posts</h2>
         <?php 
             //print_r($associations);
             foreach ($latestPosts as $post):
             $post_id = $post->getId();
         ?>
-            <div style="padding:10px;display:block">
-            <div style="padding:inherit;background-color:#F2F2F2;display:inline-block" class ="post" id="post-<?php echo $this->escapehtml($post_id);?>">
+            <div style="margin-bottom:15px;padding:10px;background-color:beige;" 
+                class ="post" id="post-<?php echo $this->escapehtml($post_id);?>">
                 <h3><a href="<?php echo $this->url($route, 
                             array('controller' => 'post',
                             'action'=>'view', 'id' => $post_id
@@ -27,10 +31,10 @@ $controller = 'category'; //current controller
                 <p class="shorthand"><?php echo $this->escapehtml($post->getContent());?></p>
                 <!-- <p class="author" >Posted By: <?php echo $this->escapehtml($post->getAuthor());?></p> -->
             </div><!-- post -->
-            </div>
         <?php endforeach; ?>
     </div><!-- blog_posts -->
-    <div class="categories">
+    
+    <div class="categories three columns">
         <h2>Categories</h2>
         <?php foreach ($categories as $cat) : ?>
             <p>#<a href="<?php echo $this->url($route, array(
@@ -41,4 +45,5 @@ $controller = 'category'; //current controller
         ?>"><?php echo $this->escapeHtml($cat->getTitle());?></a></p>
         <?php endforeach; ?>
     </div>
+    </div><!-- ten columns -->
 </div><!-- page_content -->
